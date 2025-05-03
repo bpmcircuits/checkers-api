@@ -22,13 +22,26 @@ public class CheckersMapper {
         String id = board.getGameId();
         String playerOne = board.getPlayerOne().getName();
         String playerTwo = board.getPlayerTwo().getName();
+        String currentPlayer = board.getCurrentPlayer().getName();
+
+        List<String> capturedWhiteFigures = board.getCapturedWhiteFigures()
+                .stream()
+                .map(this::mapToFigureDto)
+                .map(FigureDto::getType)
+                .toList();
+
+        List<String> capturedBlackFigures = board.getCapturedBlackFigures()
+                .stream()
+                .map(this::mapToFigureDto)
+                .map(FigureDto::getType)
+                .toList();
 
         List<BoardRowDto> rowsDto = board.getRows().stream()
                 .map(this::mapToBoardRowDto)
                 .toList();
 
 
-        return new CheckersBoardDto(id, rowsDto, playerOne, playerTwo);
+        return new CheckersBoardDto(id, rowsDto, playerOne, playerTwo, currentPlayer, capturedWhiteFigures, capturedBlackFigures);
     }
 
     private BoardRowDto mapToBoardRowDto(BoardRow boardRow) {
@@ -57,4 +70,5 @@ public class CheckersMapper {
 
         return new FigureDto(color, type);
     }
+
 }
