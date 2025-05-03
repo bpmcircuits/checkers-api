@@ -1,11 +1,9 @@
 package com.bpm.checkersweb.mapper;
 
-import com.bpm.checkersweb.checkers.figures.Figure;
-import com.bpm.checkersweb.checkers.figures.None;
-import com.bpm.checkersweb.checkers.figures.Pawn;
-import com.bpm.checkersweb.checkers.figures.Queen;
+import com.bpm.checkersweb.checkers.figures.*;
 import com.bpm.checkersweb.checkers.logic.Board;
 import com.bpm.checkersweb.checkers.logic.BoardRow;
+import com.bpm.checkersweb.checkers.player.Player;
 import com.bpm.checkersweb.dto.BoardRowDto;
 import com.bpm.checkersweb.dto.CheckersBoardDto;
 import com.bpm.checkersweb.dto.FigureDto;
@@ -40,8 +38,10 @@ public class CheckersMapper {
                 .map(this::mapToBoardRowDto)
                 .toList();
 
+        String winner = getWinningColor(board.checkWinner(), board.getPlayerOne(), board.getPlayerTwo());
 
-        return new CheckersBoardDto(id, rowsDto, playerOne, playerTwo, currentPlayer, capturedWhiteFigures, capturedBlackFigures);
+        return new CheckersBoardDto(id, rowsDto, playerOne, playerTwo,
+                currentPlayer, capturedWhiteFigures, capturedBlackFigures, winner);
     }
 
     private BoardRowDto mapToBoardRowDto(BoardRow boardRow) {
@@ -69,6 +69,11 @@ public class CheckersMapper {
         }
 
         return new FigureDto(color, type);
+    }
+
+    private String getWinningColor(FigureColor winner, Player playerOne, Player playerTwo) {
+        if (winner == null) return null;
+        return winner == playerOne.getFigureColor() ? playerOne.getName() : playerTwo.getName();
     }
 
 }

@@ -7,4 +7,5 @@ public record CheckersBoardDto (String gameId,
                                 String playerTwo,
                                 String currentPlayer,
                                 List<String> capturedWhiteFigures,
-                                List<String> capturedBlackFigures) {}
+                                List<String> capturedBlackFigures,
+                                String winner) {}
